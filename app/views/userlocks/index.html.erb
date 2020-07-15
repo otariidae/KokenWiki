@@ -15,9 +15,9 @@
                 <td><%= user.email %></td>
                 <td>
                     <% if user.access_locked? %>
-                        <%= button_to "ロック解除", {:action => "update", :user_id => user.id, :lock => "false"}, :class => "btn btn-primary", :method => :put %>
+                        <%= button_to "ロック解除", unlock_user_path(user), class: "btn btn-light", method: :delete, remote: true %>
                     <% else %>
-                        <%= button_to "ロック", {:action => "update", :user_id => user.id, :lock => "true"}, :class => "btn btn-danger", :method => :put %>
+                        <%= button_to "ロック", lock_user_path(user), class: "btn btn-danger", method: :put, remote: true %>
                     <% end %>
                 </td>
             </tr>
