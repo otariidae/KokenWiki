@@ -4,17 +4,42 @@ class AdminSettingsController < ApplicationController
   def index
     @users = User.all.order("is_admin DESC")
   end
-  def update
-    user = User.find_by(id: params[:user_id])
+
+  def privilege
+    user = User.find(params[:id])
+
     if user == current_user
-      redirect_to action: "index"
+      respond_to do |format|
+        format.html { redirect_to({ action: "index" }, alert: "You cannot privilege yourself.") }
+        format.json { head :bad_request }
+      end
       return
     end
-    if params[:admin] == "true" && !user.is_admin?
-      user.update(is_admin: true)
-    elsif params[:admin] == "false" && user.is_admin?
-      user.update(is_admin: false)
+
+    user.update!(is_admin: true)
+
+    respond_to do |format|
+      format.html { redirect_to({ action: "index" }, notice: "#{user.name} became successfully an administrator.") }
+      format.json { head :no_content }
     end
-    redirect_to action: "index"
+  end
+
+  def unprivilege
+    user = User.find(params[:id])
+
+    if user == current_user
+      respond_to do |format|
+        format.html { redirect_to({ action: "index" }, alert: "You cannot unprivilege yourself.") }
+        format.json { head :bad_request }
+      end
+      return
+    end
+
+    user.update!(is_admin: false)
+
+    respond_to do |format|
+      format.html { redirect_to({ action: "index" }, notice: "#{user.name}'s privilege was successfully withdrawn.") }
+      format.json { head :no_content }
+    end
   end
 end

@@ -116,10 +116,11 @@ Rails.application.routes.draw do
     scope "/users" do
       put "/:id/lock" => "userlocks#lock", as: "lock_user"
       delete "/:id/lock" => "userlocks#unlock", as: "unlock_user"
+      post "/:id/privilege" => "admin_settings#privilege", as: "privilege_user"
+      post "/:id/unprivilege" => "admin_settings#unprivilege", as: "unprivilege_user"
     end
 
     get "/admin" => "admin_settings#index"
-    put "/admin" => "admin_settings#update"
     get "/" => redirect("/setting/user/edit")
   end
 

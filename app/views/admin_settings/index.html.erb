@@ -15,9 +15,9 @@
                 <td><%= user.email %></td>
                 <td>
                     <% if user.is_admin %>
-                        <%= button_to "管理者から外す", {:action => "update", :user_id => user.id, :admin => "false"}, :class => "btn btn-danger", :method => :put %>
+                        <%= button_to "管理者から外す", unprivilege_user_path(user), class: "btn btn-danger", method: :post, remote: true %>
                     <% else %>
-                        <%= button_to "管理者にする", {:action => "update", :user_id => user.id, :admin => "true"}, :class => "btn btn-default", :method => :put %>
+                        <%= button_to "管理者にする", privilege_user_path(user), class: "btn btn-light", method: :post, remote: true %>
                     <% end %>
                 </td>
             </tr>
